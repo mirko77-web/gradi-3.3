@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html class="dark" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GRADI 3.3</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+
+<style>
+  :root {
+    --gold: #E9C176;
+    --gold-dim: rgba(233,193,118,0.18);
+    --gold-glow: rgba(233,193,118,0.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: #000;
+    color: #fff;
+    min-height: 100vh;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1s ease-out;
+  }
+  body.loaded { opacity: 1; }
+
+  /* ── PARALLAX BG ── */
+  .parallax-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url('4.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  .parallax-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.68);
+  }
+
+  /* ── FADE UP ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 1s ease-out forwards; }
+  .delay-1 { animation-delay: 0.15s; opacity: 0; }
+  .delay-2 { animation-delay: 0.35s; opacity: 0; }
+  .delay-3 { animation-delay: 0.55s; opacity: 0; }
+  .delay-4 { animation-delay: 0.75s; opacity: 0; }
+
+  /* ── GLOW BUTTON ── */
+  .btn-gold {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.38);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    box-shadow: 0 0 22px var(--gold-glow);
+  }
+  .btn-gold:hover {
+    background: rgba(233,193,118,0.12);
+    box-shadow: 0 0 44px var(--gold-glow);
+    transform: translateY(-2px);
+  }
+  .btn-gold:active { transform: scale(0.97); }
+
+  /* ── LOGO GLOW ── */
+  .logo-img {
+    width: clamp(140px, 22vw, 220px);
+    border-radius: 50%;
+    box-shadow: 0 0 60px var(--gold-glow);
+    transition: box-shadow 0.4s;
+  }
+  .logo-img:hover { box-shadow: 0 0 90px rgba(233,193,118,0.55); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+    padding: 2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.4rem, 4vw, 2.8rem);
+    line-height: 1.35;
+    color: #e8e0d0;
+    margin-top: 28px;
+    max-width: 640px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+  }
+
+  .since {
+    font-size: 0.65rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.75;
+    margin-top: 12px;
+    margin-bottom: 44px;
+  }
+
+  .btns { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+
+  /* ── OVERLAY CHI SIAMO ── */
+  #overlay-storia {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  #overlay-storia.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .overlay-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(14px);
+  }
+
+  .storia-card {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    background: rgba(10,8,5,0.92);
+    border: 1px solid rgba(233,193,118,0.28);
+    border-radius: 16px;
+    padding: clamp(2rem, 6vw, 3.5rem);
+    box-shadow: 0 0 80px rgba(233,193,118,0.12), 0 30px 60px rgba(0,0,0,0.7);
+    transform: translateY(30px);
+    transition: transform 0.45s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(233,193,118,0.3) transparent;
+  }
+  #overlay-storia.open .storia-card {
+    transform: translateY(0);
+  }
+
+  .storia-card::-webkit-scrollbar { width: 4px; }
+  .storia-card::-webkit-scrollbar-thumb { background: rgba(233,193,118,0.3); border-radius: 2px; }
+
+  .storia-close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    background: none;
+    border: none;
+    color: rgba(233,193,118,0.7);
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .storia-close:hover { color: var(--gold); transform: rotate(90deg); }
+
+  .storia-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  .storia-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    color: #ede5d6;
+    line-height: 1.2;
+    margin-bottom: 28px;
+  }
+
+  .storia-divider {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-bottom: 28px;
+  }
+
+  .storia-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    line-height: 1.85;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 20px;
+  }
+
+  .storia-card p:last-child { margin-bottom: 0; }
+
+  .storia-highlight {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ── BTN PRENOTA (outline gold filled) ── */
+  .btn-prenota {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    background: rgba(233,193,118,0.13);
+    backdrop-filter: blur(12px);
+    color: var(--gold);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s, color 0.2s;
+    box-shadow: 0 0 28px var(--gold-glow);
+  }
+  .btn-prenota:hover {
+    background: rgba(233,193,118,0.26);
+    box-shadow: 0 0 52px rgba(233,193,118,0.5);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+  .btn-prenota:active { transform: scale(0.97); }
+
+  /* ── OVERLAY PRENOTA ── */
+  #overlay-prenota {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  #overlay-prenota.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .prenota-card {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    width: 100%;
+    background: rgba(10,8,5,0.95);
+    border: 1px solid rgba(233,193,118,0.3);
+    border-radius: 16px;
+    padding: clamp(2rem, 6vw, 3rem);
+    box-shadow: 0 0 80px rgba(233,193,118,0.14), 0 30px 60px rgba(0,0,0,0.8);
+    transform: translateY(30px);
+    transition: transform 0.45s ease;
+  }
+  #overlay-prenota.open .prenota-card { transform: translateY(0); }
+
+  .prenota-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.7rem, 5vw, 2.3rem);
+    color: #ede5d6;
+    margin-bottom: 6px;
+  }
+
+  .prenota-card .sub {
+    font-size: 0.68rem;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 28px;
+    display: block;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 440px) { .form-row { grid-template-columns: 1fr; } }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .form-field label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(233,193,118,0.6);
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(233,193,118,0.2);
+    border-radius: 7px;
+    padding: 10px 14px;
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.84rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+  }
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: rgba(233,193,118,0.55);
+    background: rgba(255,255,255,0.08);
+  }
+
+  .form-field select option { background: #111; color: #fff; }
+  .form-field textarea { resize: none; height: 72px; }
+
+  .btn-submit {
+    width: 100%;
+    padding: 13px;
+    background: rgba(233,193,118,0.15);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    color: var(--gold);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, color 0.2s;
+    margin-top: 4px;
+  }
+  .btn-submit:hover { background: rgba(233,193,118,0.28); color: #fff; }
+
+  .prenota-note {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+
+  /* success state */
+  .prenota-success {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .prenota-success .check {
+    font-size: 3rem;
+    margin-bottom: 14px;
+  }
+  .prenota-success h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .prenota-success p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="parallax-bg"></div>
+
+<!-- HERO -->
+<main class="hero">
+
+  <img src="logook.png" class="logo-img fade-up" alt="Gradi 3.3 logo">
+
+  <h1 class="fade-up delay-1">
+    Chi non beve ha sempre qualcosa da nascondere
+  </h1>
+
+  <p class="since fade-up delay-2">Since 2020</p>
+
+  <div class="btns fade-up delay-3">
+    <a href="menu.html" class="btn-gold">Il Nostro Menù</a>
+    <button class="btn-gold" onclick="openStoria()">Chi Siamo</button>
+    <button class="btn-prenota delay-4 fade-up" onclick="openPrenota()">Prenota Ora</button>
+  </div>
+
+</main>
+
+<!-- OVERLAY CHI SIAMO -->
+<div id="overlay-storia" role="dialog" aria-modal="true" aria-label="Chi siamo">
+  <div class="overlay-bg" onclick="closeStoria()"></div>
+  <div class="storia-card">
+    <button class="storia-close" onclick="closeStoria()" aria-label="Chiudi">×</button>
+
+    <span class="storia-label">La nostra storia</span>
+    <h2>Un posto che<br>non ti aspetti</h2>
+    <div class="storia-divider"></div>
+
+    <p>
+      <span class="storia-highlight">Gradi 3.3</span> nasce nel 2020 da un'idea semplice quanto ostinata: creare un angolo dove il tempo scorre diversamente. Non un bar, non un locale — qualcosa di più difficile da etichettare. Un luogo che sa di vino buono, di conversazioni lente, di cibo fatto con cura.
+    </p>
+
+    <p>
+      Il nome è una coordinata interiore. Un grado di inclinazione, un punto di equilibrio tra il formale e l'informale, tra la tradizione e il gusto di chi non si accontenta. Tre virgola tre: né tondo, né preciso. Come noi.
+    </p>
+
+    <p>
+      Portiamo in tavola ingredienti selezionati con rispetto — salumi di Martina Franca, pecorini stagionati, peperoni cruschi di Senise, stracciatella fresca. Ogni tagliere racconta una provenienza. Ogni calice è scelto per avere qualcosa da dire.
+    </p>
+
+    <p>
+      Se sei qui per la prima volta, benvenuto. Se ci conosci già, sai che troverai sempre qualcosa di nuovo da scoprire — e qualcosa di familiare su cui tornare.
+    </p>
+
+    <p style="color: rgba(233,193,118,0.6); font-size: 0.85rem; letter-spacing: 0.1em; margin-top: 32px; font-family: 'Manrope', sans-serif;">
+      GRADI 3.3 — Dal 2020, con carattere.
+    </p>
+  </div>
+</div>
+
+<!-- OVERLAY PRENOTA ORA -->
+<div id="overlay-prenota" role="dialog" aria-modal="true" aria-label="Prenota un tavolo">
+  <div class="overlay-bg" onclick="closePrenota()"></div>
+  <div class="prenota-card">
+    <button class="storia-close" onclick="closePrenota()" aria-label="Chiudi">×</button>
+
+    <h2>Prenota un tavolo</h2>
+    <span class="sub">Gradi 3.3 — Ti aspettiamo</span>
+
+    <div id="prenota-form">
+      <div class="form-group">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Nome</label>
+            <input type="text" id="f-nome" placeholder="Il tuo nome">
+          </div>
+          <div class="form-field">
+            <label>Telefono</label>
+            <input type="tel" id="f-tel" placeholder="+39 000 000 0000">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Data</label>
+            <input type="date" id="f-data">
+          </div>
+          <div class="form-field">
+            <label>Orario</label>
+            <input type="time" id="f-ora" min="17:00" max="23:30">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Numero di persone</label>
+          <select id="f-persone">
+            <option value="">— Seleziona —</option>
+            <option>1 persona</option>
+            <option>2 persone</option>
+            <option>3 persone</option>
+            <option>4 persone</option>
+            <option>5 persone</option>
+            <option>6 persone</option>
+            <option>7+ persone</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Note (facoltativo)</label>
+          <textarea id="f-note" placeholder="Allergie, occasioni speciali, richieste particolari…"></textarea>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="submitPrenota()">Conferma prenotazione</button>
+      <p class="prenota-note">La prenotazione sarà confermata telefonicamente entro breve.<br>Per urgenze chiama direttamente il locale.</p>
+    </div>
+
+    <div class="prenota-success" id="prenota-success">
+      <div class="check">🥂</div>
+      <h3>Richiesta inviata!</h3>
+      <p>Grazie, <span id="success-nome"></span>.<br>Ti contatteremo al più presto per confermare il tuo tavolo.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+  });
+
+  function openStoria() {
+    document.getElementById('overlay-storia').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeStoria() {
+    document.getElementById('overlay-storia').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openPrenota() {
+    document.getElementById('overlay-prenota').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePrenota() {
+    document.getElementById('overlay-prenota').classList.remove('open');
+    document.body.style.overflow = '';
+    // reset form after close animation
+    setTimeout(() => {
+      document.getElementById('prenota-form').style.display = '';
+      document.getElementById('prenota-success').style.display = 'none';
+    }, 500);
+  }
+
+  function submitPrenota() {
+    const nome = document.getElementById('f-nome').value.trim();
+    const tel  = document.getElementById('f-tel').value.trim();
+    const data = document.getElementById('f-data').value;
+    const ora  = document.getElementById('f-ora').value;
+    const per  = document.getElementById('f-persone').value;
+    const note = document.getElementById('f-note').value.trim();
+
+    if (!nome || !tel || !data || !ora || !per) {
+      alert('Per favore compila tutti i campi obbligatori.');
+      return;
+    }
+
+    const dataFormattata = new Date(data).toLocaleDateString('it-IT', {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+
+    const messaggio = [
+      `🍷 *Nuova prenotazione — GRADI 3.3*`,
+      ``,
+      `👤 *Nome:* ${nome}`,
+      `📞 *Telefono:* ${tel}`,
+      `📅 *Data:* ${dataFormattata}`,
+      `🕐 *Orario:* ${ora}`,
+      `👥 *Persone:* ${per}`,
+      ...(note ? [`📝 *Note:* ${note}`] : [])
+    ].join('\n');
+
+    // ⚠️ SOSTITUISCI con il numero WhatsApp del locale (solo cifre, senza + e senza spazi)
+    // Esempio: Italia +39 333 123 4567 → 393331234567
+    const numeroLocale = '39XXXXXXXXXX';
+
+    const url = 'https://wa.me/' + numeroLocale + '?text=' + encodeURIComponent(messaggio);
+    window.open(url, '_blank');
+
+    document.getElementById('success-nome').textContent = nome;
+    document.getElementById('prenota-form').style.display = 'none';
+    document.getElementById('prenota-success').style.display = 'block';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeStoria(); closePrenota(); }
+  });
+</script>
+</body>
+</html>
