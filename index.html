@@ -436,16 +436,62 @@
       min-width: 120px;
     }
   }
+
+  .instagram-fixed {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  box-shadow: 0 0 22px rgba(233,193,118,0.22);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.instagram-fixed .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--gold);
+}
+
+@media (max-width: 640px) {
+  .instagram-fixed {
+    top: 12px;
+    right: 12px;
+    padding: 8px 10px;
+    font-size: 0.58rem;
+  }
+
+  .instagram-fixed span:last-child {
+    display: none;
+  }
+}
 </style>
 </head>
 
 <body>
 <div class="parallax-bg"></div>
 
-<a href="https://www.instagram.com/gradi3.3?igsh=a3ZteXd2eDN5YXg=" target="_blank" rel="noopener noreferrer"
-   class="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 border border-[var(--gold)] rounded-full bg-black/40 backdrop-blur-md text-white text-xs uppercase tracking-widest shadow-lg hover:bg-[rgba(233,193,118,0.12)] transition">
-  <span class="material-symbols-outlined text-[18px] text-[var(--gold)]">camera_alt</span>
-  Seguici su Instagram
+<a href="https://www.instagram.com/gradi3.3?igsh=a3ZteXd2eDN5YXg="
+   target="_blank"
+   rel="noopener noreferrer"
+   class="instagram-fixed">
+  <span class="material-symbols-outlined">camera_alt</span>
+  <span>Seguici su Instagram</span>
 </a>
 
 <main class="hero">
