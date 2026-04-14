@@ -7,6 +7,10 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+IE:wght@100..400&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -15,29 +19,42 @@
     --gold-glow: rgba(233,193,118,0.35);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    min-height: 100%;
+  }
 
   body {
     font-family: 'Manrope', sans-serif;
     background: #000;
     color: #fff;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     opacity: 0;
     transition: opacity 1s ease-out;
   }
-  body.loaded { opacity: 1; }
 
-  /* ── PARALLAX BG ── */
+  body.loaded {
+    opacity: 1;
+  }
+
   .parallax-bg {
     position: fixed;
     inset: 0;
     z-index: -1;
-    background-image: url('4.png');
+    background-image: url('4.jpg');
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
+
   .parallax-bg::after {
     content: '';
     position: absolute;
@@ -45,52 +62,20 @@
     background: rgba(0,0,0,0.68);
   }
 
-  /* ── FADE UP ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .fade-up { animation: fadeUp 1s ease-out forwards; }
+
+  .fade-up {
+    animation: fadeUp 1s ease-out forwards;
+  }
+
   .delay-1 { animation-delay: 0.15s; opacity: 0; }
   .delay-2 { animation-delay: 0.35s; opacity: 0; }
   .delay-3 { animation-delay: 0.55s; opacity: 0; }
   .delay-4 { animation-delay: 0.75s; opacity: 0; }
 
-  /* ── GLOW BUTTON ── */
-  .btn-gold {
-    display: inline-block;
-    padding: 14px 36px;
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    background: rgba(0,0,0,0.38);
-    backdrop-filter: blur(12px);
-    color: #fff;
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
-    box-shadow: 0 0 22px var(--gold-glow);
-  }
-  .btn-gold:hover {
-    background: rgba(233,193,118,0.12);
-    box-shadow: 0 0 44px var(--gold-glow);
-    transform: translateY(-2px);
-  }
-  .btn-gold:active { transform: scale(0.97); }
-
-  /* ── LOGO GLOW ── */
-  .logo-img {
-    width: clamp(140px, 22vw, 220px);
-  
-   
-    transition: box-shadow 0.4s;
-  }
-
-
-  /* ── HERO ── */
   .hero {
     position: relative;
     z-index: 1;
@@ -100,19 +85,25 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 0;
-    padding: 2rem;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .logo-img {
+    width: clamp(140px, 22vw, 220px);
+    height: auto;
+    display: block;
   }
 
   .hero h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: clamp(1.4rem, 4vw, 2.8rem);
+    font-family: 'Playwrite IE', cursive;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: clamp(1.35rem, 4vw, 2.6rem);
     line-height: 1.35;
     color: #e8e0d0;
     margin-top: 28px;
-    max-width: 640px;
+    max-width: 700px;
     text-shadow: 0 2px 20px rgba(0,0,0,0.6);
   }
 
@@ -126,13 +117,61 @@
     margin-bottom: 44px;
   }
 
-  .btns { display: flex; flex-direction: column; gap: 14px; align-items: center; }
-  
+  .btns {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 
-  /* ── OVERLAY CHI SIAMO ── */
+  .btn-icon-text {
+    width: 125px;
+    min-height: 125px;
+    border: 1px solid var(--gold);
+    border-radius: 16px;
+    background: rgba(0,0,0,0.38);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 0 22px var(--gold-glow);
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    text-align: center;
+    padding: 14px;
+  }
 
-  
-  #overlay-storia {
+  .btn-icon-text:hover {
+    background: rgba(233,193,118,0.12);
+    box-shadow: 0 0 44px var(--gold-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-icon-text:active {
+    transform: scale(0.97);
+  }
+
+  .btn-icon-text .material-symbols-outlined {
+    font-size: 34px;
+    color: var(--gold);
+  }
+
+  .btn-icon-text span:last-child {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1.25;
+  }
+
+  #overlay-storia,
+  #overlay-prenota {
     position: fixed;
     inset: 0;
     z-index: 100;
@@ -144,7 +183,9 @@
     pointer-events: none;
     transition: opacity 0.45s ease;
   }
-  #overlay-storia.open {
+
+  #overlay-storia.open,
+  #overlay-prenota.open {
     opacity: 1;
     pointer-events: all;
   }
@@ -156,14 +197,14 @@
     backdrop-filter: blur(14px);
   }
 
-  .storia-card {
+  .storia-card,
+  .prenota-card {
     position: relative;
     z-index: 1;
-    max-width: 640px;
     width: 100%;
     max-height: 88vh;
     overflow-y: auto;
-    background: rgba(10,8,5,0.92);
+    background: rgba(10,8,5,0.95);
     border: 1px solid rgba(233,193,118,0.28);
     border-radius: 16px;
     padding: clamp(2rem, 6vw, 3.5rem);
@@ -173,12 +214,30 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(233,193,118,0.3) transparent;
   }
-  #overlay-storia.open .storia-card {
+
+  .storia-card {
+    max-width: 640px;
+  }
+
+  .prenota-card {
+    max-width: 520px;
+  }
+
+  #overlay-storia.open .storia-card,
+  #overlay-prenota.open .prenota-card {
     transform: translateY(0);
   }
 
-  .storia-card::-webkit-scrollbar { width: 4px; }
-  .storia-card::-webkit-scrollbar-thumb { background: rgba(233,193,118,0.3); border-radius: 2px; }
+  .storia-card::-webkit-scrollbar,
+  .prenota-card::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .storia-card::-webkit-scrollbar-thumb,
+  .prenota-card::-webkit-scrollbar-thumb {
+    background: rgba(233,193,118,0.3);
+    border-radius: 2px;
+  }
 
   .storia-close {
     position: absolute;
@@ -192,9 +251,14 @@
     line-height: 1;
     transition: color 0.2s, transform 0.2s;
   }
-  .storia-close:hover { color: var(--gold); transform: rotate(90deg); }
 
-  .storia-label {
+  .storia-close:hover {
+    color: var(--gold);
+    transform: rotate(90deg);
+  }
+
+  .storia-label,
+  .sub {
     font-size: 0.6rem;
     letter-spacing: 0.45em;
     text-transform: uppercase;
@@ -204,14 +268,23 @@
     display: block;
   }
 
-  .storia-card h2 {
+  .storia-card h2,
+  .prenota-card h2 {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-weight: 300;
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
     color: #ede5d6;
     line-height: 1.2;
     margin-bottom: 28px;
+  }
+
+  .storia-card h2 {
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+  }
+
+  .prenota-card h2 {
+    font-size: clamp(1.7rem, 5vw, 2.3rem);
+    margin-bottom: 6px;
   }
 
   .storia-divider {
@@ -229,91 +302,9 @@
     margin-bottom: 20px;
   }
 
-  .storia-card p:last-child { margin-bottom: 0; }
-
   .storia-highlight {
     color: var(--gold);
     font-style: italic;
-  }
-  
-
-  
-
-  /* ── BTN PRENOTA (outline gold filled) ── */
-  .btn-prenota {
-    display: inline-block;
-    padding: 14px 36px;
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    background: rgba(233,193,118,0.13);
-    backdrop-filter: blur(12px);
-    color: var(--gold);
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s, transform 0.2s, color 0.2s;
-    box-shadow: 0 0 28px var(--gold-glow);
-  }
-  .btn-prenota:hover {
-    background: rgba(233,193,118,0.26);
-    box-shadow: 0 0 52px rgba(233,193,118,0.5);
-    color: #fff;
-    transform: translateY(-2px);
-  }
-  .btn-prenota:active { transform: scale(0.97); }
-
-  /* ── OVERLAY PRENOTA ── */
-  #overlay-prenota {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.45s ease;
-  }
-  #overlay-prenota.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .prenota-card {
-    position: relative;
-    z-index: 1;
-    max-width: 520px;
-    width: 100%;
-    background: rgba(10,8,5,0.95);
-    border: 1px solid rgba(233,193,118,0.3);
-    border-radius: 16px;
-    padding: clamp(2rem, 6vw, 3rem);
-    box-shadow: 0 0 80px rgba(233,193,118,0.14), 0 30px 60px rgba(0,0,0,0.8);
-    transform: translateY(30px);
-    transition: transform 0.45s ease;
-  }
-  #overlay-prenota.open .prenota-card { transform: translateY(0); }
-
-  .prenota-card h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: clamp(1.7rem, 5vw, 2.3rem);
-    color: #ede5d6;
-    margin-bottom: 6px;
-  }
-
-  .prenota-card .sub {
-    font-size: 0.68rem;
-    letter-spacing: 0.38em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    margin-bottom: 28px;
-    display: block;
   }
 
   .form-group {
@@ -328,7 +319,12 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
-  @media (max-width: 440px) { .form-row { grid-template-columns: 1fr; } }
+
+  @media (max-width: 440px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
 
   .form-field {
     display: flex;
@@ -357,6 +353,7 @@
     transition: border-color 0.2s, background 0.2s;
     width: 100%;
   }
+
   .form-field input:focus,
   .form-field select:focus,
   .form-field textarea:focus {
@@ -364,8 +361,15 @@
     background: rgba(255,255,255,0.08);
   }
 
-  .form-field select option { background: #111; color: #fff; }
-  .form-field textarea { resize: none; height: 72px; }
+  .form-field select option {
+    background: #111;
+    color: #fff;
+  }
+
+  .form-field textarea {
+    resize: none;
+    height: 72px;
+  }
 
   .btn-submit {
     width: 100%;
@@ -383,7 +387,11 @@
     transition: background 0.3s, color 0.2s;
     margin-top: 4px;
   }
-  .btn-submit:hover { background: rgba(233,193,118,0.28); color: #fff; }
+
+  .btn-submit:hover {
+    background: rgba(233,193,118,0.28);
+    color: #fff;
+  }
 
   .prenota-note {
     font-size: 0.7rem;
@@ -393,16 +401,17 @@
     line-height: 1.6;
   }
 
-  /* success state */
   .prenota-success {
     display: none;
     text-align: center;
     padding: 20px 0;
   }
+
   .prenota-success .check {
     font-size: 3rem;
     margin-bottom: 14px;
   }
+
   .prenota-success h3 {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -410,22 +419,36 @@
     color: var(--gold);
     margin-bottom: 10px;
   }
+
   .prenota-success p {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.5);
     line-height: 1.7;
   }
+
+  @media (max-width: 640px) {
+    .btns {
+      gap: 12px;
+    }
+
+    .btn-icon-text {
+      width: 46%;
+      min-width: 120px;
+    }
+  }
 </style>
 </head>
 
 <body>
-
-<!-- BACKGROUND -->
 <div class="parallax-bg"></div>
 
-<!-- HERO -->
-<main class="hero">
+<a href="https://www.instagram.com/gradi3.3?igsh=a3ZteXd2eDN5YXg=" target="_blank" rel="noopener noreferrer"
+   class="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 border border-[var(--gold)] rounded-full bg-black/40 backdrop-blur-md text-white text-xs uppercase tracking-widest shadow-lg hover:bg-[rgba(233,193,118,0.12)] transition">
+  <span class="material-symbols-outlined text-[18px] text-[var(--gold)]">camera_alt</span>
+  Seguici su Instagram
+</a>
 
+<main class="hero">
   <img src="logook.png" class="logo-img fade-up" alt="Gradi 3.3 logo">
 
   <h1 class="fade-up delay-1">
@@ -435,23 +458,28 @@
   <p class="since fade-up delay-2">Since 2022</p>
 
   <div class="btns fade-up delay-3">
-    <a href="menu.html" class="btn-gold">Il Nostro Menù</a>
-
-    <a href="eventi.html" class="btn-gold">
-        I Nostri Eventi
+    <a href="menu.html" class="btn-icon-text">
+      <span class="material-symbols-outlined">restaurant_menu</span>
+      <span>Il Nostro Menù</span>
     </a>
 
-    <button class="btn-gold" onclick="openStoria()">Chi Siamo</button>
+    <a href="eventi.html" class="btn-icon-text">
+      <span class="material-symbols-outlined">event</span>
+      <span>I Nostri Eventi</span>
+    </a>
 
-    <button class="btn-prenota delay-4 fade-up" onclick="openPrenota()">Prenota Ora</button>
-</div>
+    <button class="btn-icon-text" onclick="openStoria()">
+      <span class="material-symbols-outlined">history_edu</span>
+      <span>Chi Siamo</span>
+    </button>
 
-
+    <button class="btn-icon-text" onclick="openPrenota()">
+      <span class="material-symbols-outlined">event_available</span>
+      <span>Prenota Ora</span>
+    </button>
+  </div>
 </main>
 
-
-
-<!-- OVERLAY CHI SIAMO -->
 <div id="overlay-storia" role="dialog" aria-modal="true" aria-label="Chi siamo">
   <div class="overlay-bg" onclick="closeStoria()"></div>
   <div class="storia-card">
@@ -483,7 +511,6 @@
   </div>
 </div>
 
-<!-- OVERLAY PRENOTA ORA -->
 <div id="overlay-prenota" role="dialog" aria-modal="true" aria-label="Prenota un tavolo">
   <div class="overlay-bg" onclick="closePrenota()"></div>
   <div class="prenota-card">
@@ -501,7 +528,7 @@
           </div>
           <div class="form-field">
             <label>Telefono</label>
-            <input type="tel" id="f-tel" placeholder="inserisci il tuo numero di telefono">
+            <input type="tel" id="f-tel" placeholder="Inserisci il tuo numero di telefono">
           </div>
         </div>
 
@@ -557,6 +584,7 @@
     document.getElementById('overlay-storia').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
+
   function closeStoria() {
     document.getElementById('overlay-storia').classList.remove('open');
     document.body.style.overflow = '';
@@ -566,10 +594,10 @@
     document.getElementById('overlay-prenota').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
+
   function closePrenota() {
     document.getElementById('overlay-prenota').classList.remove('open');
     document.body.style.overflow = '';
-    // reset form after close animation
     setTimeout(() => {
       document.getElementById('prenota-form').style.display = '';
       document.getElementById('prenota-success').style.display = 'none';
@@ -578,10 +606,10 @@
 
   function submitPrenota() {
     const nome = document.getElementById('f-nome').value.trim();
-    const tel  = document.getElementById('f-tel').value.trim();
+    const tel = document.getElementById('f-tel').value.trim();
     const data = document.getElementById('f-data').value;
-    const ora  = document.getElementById('f-ora').value;
-    const per  = document.getElementById('f-persone').value;
+    const ora = document.getElementById('f-ora').value;
+    const per = document.getElementById('f-persone').value;
     const note = document.getElementById('f-note').value.trim();
 
     if (!nome || !tel || !data || !ora || !per) {
@@ -590,7 +618,9 @@
     }
 
     const dataFormattata = new Date(data).toLocaleDateString('it-IT', {
-      day: '2-digit', month: '2-digit', year: 'numeric'
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
     });
 
     const messaggio = [
@@ -604,9 +634,7 @@
       ...(note ? [`📝 *Note:* ${note}`] : [])
     ].join('\n');
 
-  
     const numeroLocale = '393479537624';
-
     const url = 'https://wa.me/' + numeroLocale + '?text=' + encodeURIComponent(messaggio);
     window.open(url, '_blank');
 
@@ -616,7 +644,10 @@
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { closeStoria(); closePrenota(); }
+    if (e.key === 'Escape') {
+      closeStoria();
+      closePrenota();
+    }
   });
 </script>
 </body>
