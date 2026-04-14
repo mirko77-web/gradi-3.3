@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html class="dark" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+
+<style>
+body { opacity: 0; transition: opacity 0.8s ease-out; }
+body.loaded { opacity: 1; }
+
+.parallax-bg {
+  background-image: url('4.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease-out forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glow-gold {
+  box-shadow: 0 0 40px rgba(233,193,118,0.35);
+}
+</style>
+
+<script>
+window.addEventListener("load", () => {
+  document.body.classList.add("loaded");
+});
+</script>
+</head>
+
+<body class="bg-background text-white font-body min-h-screen overflow-x-hidden">
+
+<!-- BACKGROUND -->
+<div class="fixed inset-0 -z-10 parallax-bg">
+  <div class="absolute inset-0 bg-black/70"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-xl flex justify-between items-center px-6 py-5">
+  <a href="index.html" class="text-xl font-bold tracking-[0.35em] text-primary uppercase">
+    GRADI 3.3
+  </a>
+</nav>
+
+<!-- HEADER -->
+<header class="pt-28 pb-10 text-center fade-up">
+  <h1 class="text-3xl sm:text-4xl font-headline text-primary tracking-wide drop-shadow-xl">
+    I Nostri Eventi
+  </h1>
+  <p class="text-slate-300 text-xs sm:text-sm mt-3 tracking-[0.3em] uppercase">
+    Scopri cosa succede da noi
+  </p>
+</header>
+
+<!-- EVENTO -->
+<section class="max-w-3xl mx-auto px-6 pb-20 fade-up">
+
+  <div class="bg-black/60 backdrop-blur-xl rounded-xl p-6 border border-primary/20 glow-gold">
+    
+    <img src="evento.jpeg" class="w-full h-64 object-cover rounded-lg mb-6" alt="Evento GRADI 3.3">
+
+    <h2 class="text-2xl font-headline text-primary mb-3">🎶 Karaoke e Live Music</h2>
+
+    <p class="text-slate-300 text-sm leading-relaxed">
+      Una serata speciale con Karaoke e tanto divertimento, cocktail selezionati e atmosfera unica.
+      Ogni settimana un’esperienza indimenticabile.
+    </p>
+
+    <p class="text-slate-400 text-xs mt-4">
+      📅 Ogni venerdì — dalle 21:00  
+      📍 GRADI 3.3 — Avetrana
+    </p>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 bg-black/80 w-full py-12 text-center border-t border-white/10">
+  <span class="text-primary text-xl tracking-[0.35em] uppercase">
+    GRADI 3.3
+  </span>
+  <p class="text-white/50 text-[10px] uppercase tracking-[0.3em] mt-3">
+    © 2024 GRADI 3.3. All rights reserved.
+  </p>
+</footer>
+
+</body>
+</html>

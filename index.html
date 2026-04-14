@@ -84,11 +84,11 @@
   /* ── LOGO GLOW ── */
   .logo-img {
     width: clamp(140px, 22vw, 220px);
-    border-radius: 50%;
-    box-shadow: 0 0 60px var(--gold-glow);
+  
+   
     transition: box-shadow 0.4s;
   }
-  .logo-img:hover { box-shadow: 0 0 90px rgba(233,193,118,0.55); }
+
 
   /* ── HERO ── */
   .hero {
@@ -127,8 +127,11 @@
   }
 
   .btns { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  
 
   /* ── OVERLAY CHI SIAMO ── */
+
+  
   #overlay-storia {
     position: fixed;
     inset: 0;
@@ -232,6 +235,9 @@
     color: var(--gold);
     font-style: italic;
   }
+  
+
+  
 
   /* ── BTN PRENOTA (outline gold filled) ── */
   .btn-prenota {
@@ -430,11 +436,20 @@
 
   <div class="btns fade-up delay-3">
     <a href="menu.html" class="btn-gold">Il Nostro Menù</a>
+
+    <a href="eventi.html" class="btn-gold">
+        I Nostri Eventi
+    </a>
+
     <button class="btn-gold" onclick="openStoria()">Chi Siamo</button>
+
     <button class="btn-prenota delay-4 fade-up" onclick="openPrenota()">Prenota Ora</button>
-  </div>
+</div>
+
 
 </main>
+
+
 
 <!-- OVERLAY CHI SIAMO -->
 <div id="overlay-storia" role="dialog" aria-modal="true" aria-label="Chi siamo">
@@ -486,7 +501,7 @@
           </div>
           <div class="form-field">
             <label>Telefono</label>
-            <input type="tel" id="f-tel" placeholder="+39 3479 537624">
+            <input type="tel" id="f-tel" placeholder="inserisci il tuo numero di telefono">
           </div>
         </div>
 
